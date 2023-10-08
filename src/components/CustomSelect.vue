@@ -1,44 +1,45 @@
 <template>
     <div class="input__box">
-      <label v-if="config.prefix.show" :style="config.prefix.style">{{ config.prefix.text }}</label>
-      <v-select
-  :items="selectData"
-  :placeholder="config?.placeholder"
-  v-model="selectedValue"
-  :label="config.label"
-  :variant="config.typeInput"
-  :item-title="config.keyNLS"
-  :item-value="config.key"
-  @change="handleChange"
-/>
-      <p>Выбранное значение: {{ selectedValue }}</p>
+        <label v-if="!config.prefix.show" :style="config.prefix.style">{{ config.prefix.text }}</label>
+        <v-select
+            :items="selectData"
+            :item-text="config.labelKey"
+            :item-value="config.key"
+            :placeholder="config?.placeholder"
+            v-model="selectedValue"
+            :label="config.label"
+            :variant="config.typeInput"
+            @update:modelValue="handleChange"
+        />
+        <p>Выбранное значение: {{ selectedValue ? selectedValue[config.labelKey] : '' }}</p>
     </div>
-  </template>
-  
-  <script>
-  export default {
+</template>
+
+<script>
+export default {
     props: {
-      config: Object,
-      selectData: Array,
-      value: Object,
+        config: Object,
+        selectData: Array,
+        value: Object,
     },
     data() {
-      return {
-        selectedValue: null,
-      };
+        return {
+            selectedValue: null,
+        };
     },
     methods: {
-      handleChange() {
-        this.$emit("change", this.selectedValue);
-      },
+        handleChange(newValue) {
+            console.log(newValue)
+            this.selectedValue = newValue;
+            this.$emit("change", this.selectedValue);
+        },
     },
-  };
-  </script>
-  
-  <style>
-  .input__box {
+};
+</script>
+
+<style>
+.input__box {
     width: 50%;
     margin: 0 auto;
-  }
-  </style>
-  
+}
+</style>
